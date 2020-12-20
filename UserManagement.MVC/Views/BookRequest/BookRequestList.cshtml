@@ -1,0 +1,73 @@
+﻿@model IEnumerable<UserManagement.MVC.Models.BookRequestViewModel>
+@using UserManagement.MVC.Enums
+
+@{
+    ViewData["Title"] = "BookRequestList";
+}
+
+<h1>BookRequestList</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Fullname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FromDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ToDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReturnBy)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fullname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookName)
+            </td>
+            <td>
+                @Convert.ToDateTime(item.FromDate).ToString("dd/MM/yyyy")
+                @*@Html.DisplayFor(modelItem => item.FromDate)*@
+            </td>
+            <td>
+                @Convert.ToDateTime(item.ToDate).ToString("dd/MM/yyyy")
+                @*@Html.DisplayFor(modelItem => item.ToDate)*@
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReturnBy)
+            </td>
+            <td>
+                @if (string.IsNullOrEmpty(item.Status))
+                {
+                    <a class="btn btn-primary" asp-action="SendResponse" asp-route-id="@item.BookRequestId" asp-route-status="@Status.Approve.ToString()">Approve</a>
+                    <a class="btn btn-danger" asp-action="SendResponse" asp-route-id="@item.BookRequestId" asp-route-status="@Status.Denied.ToString()">Denied</a>
+                }
+                
+                @if(string.IsNullOrEmpty(item.ReturnBy) && item.Status == Status.Approve.ToString())
+                {
+                    <a class="btn btn-info" asp-action="EditRequest" asp-route-id="@item.BookRequestId">Update</a>
+                }
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,40 @@
+﻿@model IEnumerable<UserManagement.MVC.Models.BookInventory>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Book Request List</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BookName)
+            </th>
+            <th>
+                Available Quantity
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            @if (User.IsInRole("Reader") && item.Quantity > 0 && item.Quantity != null )
+            {
+                <td>
+                    <a class="btn btn-primary" asp-action="CreateRequest" asp-route-id="@item.BookId">Request</a>
+                </td>
+            }
+        </tr>
+        }
+    </tbody>
+</table>

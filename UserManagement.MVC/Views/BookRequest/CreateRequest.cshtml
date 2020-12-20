@@ -1,0 +1,100 @@
+﻿@model UserManagement.MVC.Models.BookRequest
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Request</h1>
+
+<h4>Book Request</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateRequest">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.BookId" />
+            <div class="form-group">
+                <label  class="control-label">Book Name</label>
+                <input value="@ViewBag.BookName" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="FromDate" class="control-label"></label>
+                <input asp-for="FromDate" value="" class="form-control" />
+                <span asp-validation-for="FromDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ToDate" class="control-label"></label>
+                <input asp-for="ToDate" value="" class="form-control" />
+                <span asp-validation-for="ToDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Request" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        //$(function () {
+        //    $(".datepicker").datepicker();
+        //});
+
+        //// To set mindate in enddate
+        //function customRange(input) 
+        //{ 
+        //    return {
+        //            minDate: (input.id == "ToDate" ? $("#FromDate").datepicker("getDate") : new Date())
+        //            }; 
+        //}
+
+        //// To set maxdate in startdate
+        //function customRangeStart(input) 
+        //{ 
+        //    return {
+        //            maxDate:(input.id == "FromDate" ? $("ToDate").datepicker("getDate") : null)
+        //            }; 
+        //}
+
+        //$(document).ready(function() {
+
+        //    $('#FromDate').datepicker(
+        //    {
+        //        beforeShow: customRangeStart,
+        //        minDate: 0,
+        //        changeYear: true
+        //    });
+
+        //    $('#ToDate').datepicker(
+        //    {
+        //        beforeShow: customRange,
+        //        changeYear: true
+        //    });
+        //});
+
+            var date = "";
+            $('#FromDate').datepicker({
+                minDate: "0D",
+                onClose: function (selectedDate) {
+                    $("#ToDate").datepicker("option", "minDate", selectedDate);
+                    date = selectedDate;
+                }
+            });
+
+            $('#ToDate').datepicker({
+                minDate:date,
+                onClose: function (selectedDate) {
+                    $("#FromDate").datepicker("option", "maxDate", selectedDate);
+                }
+            });
+
+    </script>
+}
